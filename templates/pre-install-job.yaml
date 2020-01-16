@@ -17,9 +17,10 @@ spec:
         image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
         command: ["./manage.py","migrate"]
         env:
-          - name: DATABASE_URL
-          - name: SECRET_KEY
           - name: DEBUG
             value: "False"
           - name: STATIC_URL
             value: /
+        envFrom:
+          - secretRef:
+              name: {{ include "glitchtip.fullname" . }}

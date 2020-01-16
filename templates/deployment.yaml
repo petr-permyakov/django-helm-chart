@@ -4,6 +4,7 @@ metadata:
   name: {{ include "glitchtip.fullname" . }}
   labels:
     {{- include "glitchtip.labels" . | nindent 4 }}
+    lol: "yes"
 spec:
   replicas: {{ .Values.replicaCount }}
   selector:
@@ -34,12 +35,13 @@ spec:
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
           env:
-            - name: DATABASE_URL
-            - name: SECRET_KEY
             - name: DEBUG
               value: "False"
             - name: STATIC_URL
               value: /
+          envFrom:
+            - secretRef:
+                name: {{ include "glitchtip.fullname" . }}
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
