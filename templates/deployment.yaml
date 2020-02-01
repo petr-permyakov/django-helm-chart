@@ -43,6 +43,8 @@ spec:
               value: {{ required "databaseURL is a required value." .Values.databaseURL | quote }}
             - name: SECRET_KEY
               value: {{ required "secretKey is a required value." .Values.secretKey | quote }}
+            - name: ENABLE_SOCIAL_AUTH
+              value: {{ .Values.enableSocialAuth | quote }}
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
