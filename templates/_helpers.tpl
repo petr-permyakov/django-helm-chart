@@ -61,3 +61,52 @@ Create the name of the service account to use
     {{ default "default" .Values.serviceAccount.name }}
 {{- end -}}
 {{- end -}}
+
+{{/*
+Create a default fully qualified app name.
+We truncate at 63 chars because some Kubernetes name fields are limited to this (by the DNS naming spec).
+*/}}
+{{- define "glitchtip.postgresql.fullname" -}}
+{{- if .Values.postgresql.fullnameOverride -}}
+{{- .Values.postgresql.fullnameOverride | trunc 63 | trimSuffix "-" -}}
+{{- else -}}
+{{- $name := default .Chart.Name .Values.postgresql.nameOverride -}}
+{{- if contains $name .Release.Name -}}
+{{- .Release.Name | trunc 63 | trimSuffix "-" -}}
+{{- else -}}
+{{- printf "%s-%s" .Release.Name "glitchtip-postgresql" | trunc 63 | trimSuffix "-" -}}
+{{- end -}}
+{{- end -}}
+{{- end -}}
+{{- define "glitchtip.redis.fullname" -}}
+{{- if .Values.redis.fullnameOverride -}}
+{{- .Values.redis.fullnameOverride | trunc 63 | trimSuffix "-" -}}
+{{- else -}}
+{{- $name := default .Chart.Name .Values.redis.nameOverride -}}
+{{- if contains $name .Release.Name -}}
+{{- .Release.Name | trunc 63 | trimSuffix "-" -}}
+{{- else -}}
+{{- printf "%s-%s" .Release.Name "glitchtip-redis" | trunc 63 | trimSuffix "-" -}}
+{{- end -}}
+{{- end -}}
+{{- end -}}
+
+{{/*
+Set redis host
+*/}}
+{{- define "glitchtip.redis.host" -}}
+{{- if .Values.redis.enabled -}}
+{{- template "glitchtip.redis.fullname" . -}}-master
+{{- else -}}
+{{- .Values.redis.host | quote -}}
+{{- end -}}
+{{- end -}}
+
+{{/*
+Set redis url
+*/}}
+{{- define "glitchtip.redis.url" -}}
+{{- if .Values.redis.enabled -}}
+redis://{{- template "glitchtip.redis.password" -}}{{- template "glitchtip.redis.fullname" . -}}-master
+{{- end -}}
+{{- end -}}
