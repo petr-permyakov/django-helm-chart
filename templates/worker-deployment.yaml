@@ -1,12 +1,11 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ include "glitchtip.fullname" . }}
+  name: {{ include "glitchtip.fullname" . }}-worker
   labels:
     {{- include "glitchtip.labels" . | nindent 4 }}
-    lol: "yes"
 spec:
-  replicas: {{ .Values.replicaCount }}
+  replicas: {{ .Values.image.replicaCount }}
   selector:
     matchLabels:
       {{- include "glitchtip.selectorLabels" . | nindent 6 }}
@@ -14,12 +13,13 @@ spec:
     metadata:
       labels:
         {{- include "glitchtip.selectorLabels" . | nindent 8 }}
+      annotations:
+        checksum/secrets.yaml: {{ include (print $.Template.BasePath "/secrets.yaml") . | sha256sum }}
     spec:
     {{- with .Values.imagePullSecrets }}
       imagePullSecrets:
         {{- toYaml . | nindent 8 }}
     {{- end }}
-      serviceAccountName: {{ include "glitchtip.serviceAccountName" . }}
       securityContext:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
       containers:
@@ -28,23 +28,18 @@ spec:
             {{- toYaml .Values.securityContext | nindent 12 }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
-          ports:
-            - name: http
-              containerPort: 8080
-              protocol: TCP
           resources:
-            {{- toYaml .Values.resources | nindent 12 }}
+            {{- toYaml .Values.worker.resources | nindent 12 }}
           env:
             - name: DEBUG
               value: "False"
             - name: STATIC_URL
               value: /
-            - name: DATABASE_URL
-              value: {{ required "databaseURL is a required value." .Values.databaseURL | quote }}
-            - name: SECRET_KEY
-              value: {{ required "secretKey is a required value." .Values.secretKey | quote }}
-            - name: ENABLE_SOCIAL_AUTH
-              value: {{ .Values.enableSocialAuth | quote }}
+            - name: SERVER_ROLE
+              value: "worker"
+          envFrom:
+            - secretRef:
+                name: {{ include "glitchtip.fullname" . }}
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
