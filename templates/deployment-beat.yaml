@@ -1,20 +1,20 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ include "glitchtip.fullname" . }}-worker
+  name: {{ include "glitchtip.fullname" . }}-beat
   labels:
     {{- include "glitchtip.labels" . | nindent 4 }}
 spec:
-  replicas: {{ .Values.image.replicaCount }}
+  replicas: 1
   selector:
     matchLabels:
       {{- include "glitchtip.selectorLabels" . | nindent 6 }}
   template:
     metadata:
+      annotations:
+        checksum/secret: {{ include (print $.Template.BasePath "/secrets.yaml") . | sha256sum }}
       labels:
         {{- include "glitchtip.selectorLabels" . | nindent 8 }}
-      annotations:
-        checksum/secrets.yaml: {{ include (print $.Template.BasePath "/secrets.yaml") . | sha256sum }}
     spec:
     {{- with .Values.imagePullSecrets }}
       imagePullSecrets:
@@ -29,26 +29,34 @@ spec:
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           resources:
-            {{- toYaml .Values.worker.resources | nindent 12 }}
+            limits:
+              cpu: 50m
+              memory: 96Mi
+            requests:
+              cpu: 1m
+              memory: 32Mi
           env:
             - name: DEBUG
               value: "False"
             - name: STATIC_URL
               value: /
             - name: SERVER_ROLE
-              value: "worker"
+              value: "beat"
+            {{- if .Values.redisURL }}
+            - name: REDIS_URL
+              value: {{ .Values.redisURL }}
+            {{- end }}
+            {{- if .Values.redis.enabled }}
+            - name: REDIS_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  key: redis-password
+                  name: {{ include "glitchtip.fullname" . }}-glitchtip-redis
+            - name: REDIS_HOST
+              value: {{ template "glitchtip.redis.host" . }}
+            - name: REDIS_PORT
+              value: {{ template "glitchtip.redis.port" . }}
+            {{- end }}
           envFrom:
             - secretRef:
                 name: {{ include "glitchtip.fullname" . }}
-      {{- with .Values.nodeSelector }}
-      nodeSelector:
-        {{- toYaml . | nindent 8 }}
-      {{- end }}
-    {{- with .Values.affinity }}
-      affinity:
-        {{- toYaml . | nindent 8 }}
-    {{- end }}
-    {{- with .Values.tolerations }}
-      tolerations:
-        {{- toYaml . | nindent 8 }}
-    {{- end }}

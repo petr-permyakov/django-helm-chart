@@ -1,28 +1,25 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ include "glitchtip.fullname" . }}-web
+  name: {{ include "glitchtip.fullname" . }}-worker
   labels:
     {{- include "glitchtip.labels" . | nindent 4 }}
 spec:
-  replicas: {{ .Values.replicaCount }}
+  replicas: {{ .Values.worker.replicaCount }}
   selector:
     matchLabels:
       {{- include "glitchtip.selectorLabels" . | nindent 6 }}
-      role: web
   template:
     metadata:
+      annotations:
+        checksum/secret: {{ include (print $.Template.BasePath "/secrets.yaml") . | sha256sum }}
       labels:
         {{- include "glitchtip.selectorLabels" . | nindent 8 }}
-        role: web
-      annotations:
-        checksum/secrets.yaml: {{ include (print $.Template.BasePath "/secrets.yaml") . | sha256sum }}
     spec:
     {{- with .Values.imagePullSecrets }}
       imagePullSecrets:
         {{- toYaml . | nindent 8 }}
     {{- end }}
-      serviceAccountName: {{ include "glitchtip.serviceAccountName" . }}
       securityContext:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
       containers:
@@ -31,19 +28,30 @@ spec:
             {{- toYaml .Values.securityContext | nindent 12 }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
-          ports:
-            - name: http
-              containerPort: 8080
-              protocol: TCP
           resources:
-            {{- toYaml .Values.resources | nindent 12 }}
+            {{- toYaml .Values.worker.resources | nindent 12 }}
           env:
             - name: DEBUG
               value: "False"
             - name: STATIC_URL
               value: /
-            - name: ENABLE_SOCIAL_AUTH
-              value: {{ .Values.enableSocialAuth | quote }}
+            - name: SERVER_ROLE
+              value: "worker"
+            {{- if .Values.redisURL }}
+            - name: REDIS_URL
+              value: {{ .Values.redisURL }}
+            {{- end }}
+            {{- if .Values.redis.enabled }}
+            - name: REDIS_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  key: redis-password
+                  name: {{ include "glitchtip.fullname" . }}-glitchtip-redis
+            - name: REDIS_HOST
+              value: {{ template "glitchtip.redis.host" . }}
+            - name: REDIS_PORT
+              value: {{ template "glitchtip.redis.port" . }}
+            {{- end }}
           envFrom:
             - secretRef:
                 name: {{ include "glitchtip.fullname" . }}
