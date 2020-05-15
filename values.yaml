@@ -13,16 +13,23 @@ fullnameOverride: ""
 databaseURL:
 secretKey:
 redisURL:
-enableSocialAuth: false
+# Only needed when using stripe for saas environment
+stripeLiveSecretKey:
+djstripeWebhookSecret: 
+
+environmentVariables:
+  ENABLE_SOCIAL_AUTH: false
+  GLITCHTIP_DOMAIN: https://example.com
 
 web:
   replicaCount: 1
   hpa:
     enabled: false
-    cputhreshold: 60
+    cputhreshold: 70
     minpods: 2
-    maxpods: 5
-  resources: {}
+    maxpods: 4
+  resources:
+    {}
     # limits:
     #   cpu: 100m
     #   memory: 256Mi
@@ -45,10 +52,11 @@ worker:
   replicaCount: 1
   hpa:
     enabled: false
-    cputhreshold: 60
+    cputhreshold: 90
     minpods: 1
-    maxpods: 10
-  resources: {}
+    maxpods: 4
+  resources:
+    {}
     # limits:
     #   cpu: 500m
     #   memory: 256Mi
@@ -72,7 +80,8 @@ service:
 
 ingress:
   enabled: false
-  annotations: {}
+  annotations:
+    {}
     # kubernetes.io/ingress.class: nginx
     # kubernetes.io/tls-acme: "true"
   hosts:
@@ -85,7 +94,6 @@ ingress:
 
 redis:
   enabled: true
-  nameOverride: glitchtip-redis
   master:
     persistence:
       enabled: false

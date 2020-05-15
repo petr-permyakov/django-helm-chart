@@ -96,7 +96,7 @@ Set redis host
 */}}
 {{- define "glitchtip.redis.host" -}}
 {{- if .Values.redis.enabled -}}
-{{- template "glitchtip.redis.fullname" . -}}-master
+{{- template "glitchtip.redis.fullname" . -}}-redis-master
 {{- else -}}
 {{- .Values.redis.host | quote -}}
 {{- end -}}
@@ -108,5 +108,16 @@ Set redis url
 {{- define "glitchtip.redis.url" -}}
 {{- if .Values.redis.enabled -}}
 redis://{{- template "glitchtip.redis.password" -}}{{- template "glitchtip.redis.fullname" . -}}-master
+{{- end -}}
+{{- end -}}
+
+{{/*
+Set redis port
+*/}}
+{{- define "glitchtip.redis.port" -}}
+{{- if .Values.redis.enabled -}}
+    "6379"
+{{- else -}}
+{{- default "6379" .Values.redis.port | quote -}}
 {{- end -}}
 {{- end -}}
