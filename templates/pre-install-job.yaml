@@ -12,7 +12,7 @@ metadata:
     checksum/configmap: {{ include (print $.Template.BasePath "/configmap.yaml") . | sha256sum }}
     tag: {{ .Values.image.tag }}
 spec:
-  activeDeadlineSeconds: 180
+  activeDeadlineSeconds: 600
   template:
     spec:
       restartPolicy: Never
