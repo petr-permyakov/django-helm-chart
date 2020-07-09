@@ -1,0 +1,14 @@
+{{- if .Values.web.budget.minAvailable -}}
+apiVersion: policy/v1beta1
+kind: PodDisruptionBudget
+metadata:
+  name: {{ include "glitchtip.fullname" . }}
+  labels:
+    {{- include "glitchtip.labels" . | nindent 4 }}
+spec:
+  minAvailable: {{ .Values.web.budget.minAvailable }}
+  selector:
+    matchLabels:
+      {{- include "glitchtip.selectorLabels" . | nindent 6 }}
+      role: web
+{{- end -}}

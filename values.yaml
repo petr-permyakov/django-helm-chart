@@ -28,6 +28,8 @@ web:
     cputhreshold: 70
     minpods: 2
     maxpods: 4
+  budget:
+    minAvailable: 1
   resources:
     {}
     # limits:
