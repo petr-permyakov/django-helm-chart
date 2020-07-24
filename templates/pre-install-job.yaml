@@ -10,7 +10,7 @@ metadata:
     "helm.sh/hook-weight": "0"
     checksum/secret: {{ include (print $.Template.BasePath "/secrets.yaml") . | sha256sum }}
     checksum/configmap: {{ include (print $.Template.BasePath "/configmap.yaml") . | sha256sum }}
-    tag: {{ .Values.image.tag }}
+    tag: "{{ .Values.image.tag }}"
 spec:
   activeDeadlineSeconds: 600
   template:
