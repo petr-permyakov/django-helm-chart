@@ -1,0 +1,15 @@
+image: alpine/helm:3.2.4
+
+pages:
+  stage: deploy
+  script:
+    - mkdir public
+    - helm package . --destination public
+    - helm repo index --url https://${CI_PROJECT_NAMESPACE}.gitlab.io/${CI_PROJECT_NAME} .
+    - mv index.yaml ./public
+  artifacts:
+    paths:
+      - public
+  only:
+    - master
+    - tags
