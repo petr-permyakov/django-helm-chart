@@ -6,9 +6,9 @@ pages:
   stage: deploy
   script:
     - mkdir public
-    - helm package . --destination public
+    - helm package .
     - helm repo index --url https://${CI_PROJECT_NAMESPACE}.gitlab.io/${CI_PROJECT_NAME} .
-    - mv index.yaml ./public
+    - mv index.yaml glitchtip-*.tgz ./public
   artifacts:
     paths:
       - public
