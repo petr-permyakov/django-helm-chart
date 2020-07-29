@@ -1,4 +1,6 @@
-image: alpine/helm:3.2.4
+image:
+  name: alpine/helm:3.2.4
+  entrypoint: ["/bin/sh", "-c"]
 
 pages:
   stage: deploy
