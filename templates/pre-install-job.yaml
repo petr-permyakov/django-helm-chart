@@ -1,9 +1,9 @@
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: {{ include "glitchtip.fullname" . }}
+  name: {{ include "django.fullname" . }}
   labels:
-    {{- include "glitchtip.labels" . | nindent 4 }}
+    {{- include "django.labels" . | nindent 4 }}
   annotations:
     "helm.sh/hook": post-install,pre-upgrade
     "helm.sh/hook-delete-policy": before-hook-creation,hook-succeeded

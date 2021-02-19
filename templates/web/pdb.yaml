@@ -3,14 +3,14 @@
 apiVersion: policy/v1beta1
 kind: PodDisruptionBudget
 metadata:
-  name: {{ include "glitchtip.fullname" . }}
+  name: {{ include "django.fullname" . }}-web
   labels:
-    {{- include "glitchtip.labels" . | nindent 4 }}
+    {{- include "django.labels" . | nindent 4 }}
 spec:
   minAvailable: {{ .Values.web.budget.minAvailable }}
   selector:
     matchLabels:
-      {{- include "glitchtip.selectorLabels" . | nindent 6 }}
-      role: web
+      {{- include "django.selectorLabels" . | nindent 6 }}
+      app.kubernetes.io/component: web
 {{- end -}}
 {{- end -}}

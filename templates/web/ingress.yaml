@@ -1,6 +1,6 @@
-{{- if .Values.ingress.enabled -}}
-{{- $fullName := include "glitchtip.fullname" . -}}
-{{- $svcPort := .Values.service.port -}}
+{{- if .Values.web.ingress.enabled -}}
+{{- $fullName := include "django.fullname" . -}}
+{{- $svcPort := .Values.web.service.port -}}
 {{- if semverCompare ">=1.14-0" .Capabilities.KubeVersion.GitVersion -}}
 apiVersion: networking.k8s.io/v1beta1
 {{- else -}}
@@ -10,15 +10,15 @@ kind: Ingress
 metadata:
   name: {{ $fullName }}
   labels:
-    {{- include "glitchtip.labels" . | nindent 4 }}
-  {{- with .Values.ingress.annotations }}
+    {{- include "django.labels" . | nindent 4 }}
+  {{- with .Values.web.ingress.annotations }}
   annotations:
     {{- toYaml . | nindent 4 }}
   {{- end }}
 spec:
-  {{- if .Values.ingress.tls }}
+  {{- if .Values.web.ingress.tls }}
   tls:
-    {{- range .Values.ingress.tls }}
+    {{- range .Values.web.ingress.tls }}
     - hosts:
         {{- range .hosts }}
         - {{ . | quote }}
@@ -27,13 +27,15 @@ spec:
     {{- end }}
   {{- end }}
   rules:
-    {{- range .Values.ingress.hosts }}
+    {{- range .Values.web.ingress.hosts }}
     - host: {{ .host | quote }}
       http:
         paths:
-          - pathType: ImplementationSpecific
+          {{- range .paths }}
+          - path: {{ .path }}
             backend:
-              serviceName: {{ $fullName }}
+              serviceName: {{ $fullName }}-web
               servicePort: {{ $svcPort }}
+          {{- end }}
     {{- end }}
   {{- end }}

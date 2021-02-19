@@ -1,14 +1,16 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ include "glitchtip.fullname" . }}-worker
+  name: {{ include "django.fullname" . }}-worker
   labels:
-    {{- include "glitchtip.labels" . | nindent 4 }}
+    {{- include "django.labels" . | nindent 4 }}
+    app.kubernetes.io/component: worker
 spec:
   replicas: {{ .Values.worker.replicaCount }}
   selector:
     matchLabels:
-      {{- include "glitchtip.selectorLabels" . | nindent 6 }}
+      {{- include "django.selectorLabels" . | nindent 6 }}
+      app.kubernetes.io/component: worker
   template:
     metadata:
       annotations:
@@ -16,7 +18,8 @@ spec:
         checksum/configmap: {{ include (print $.Template.BasePath "/configmap.yaml") . | sha256sum }}
         tag: "{{ .Values.image.tag }}"
       labels:
-        {{- include "glitchtip.selectorLabels" . | nindent 8 }}
+        {{- include "django.selectorLabels" . | nindent 8 }}
+        app.kubernetes.io/component: worker
     spec:
     {{- with .Values.imagePullSecrets }}
       imagePullSecrets:
@@ -33,10 +36,6 @@ spec:
           resources:
             {{- toYaml .Values.worker.resources | nindent 12 }}
           env:
-            - name: DEBUG
-              value: "False"
-            - name: STATIC_URL
-              value: /
             - name: SERVER_ROLE
               value: "worker"
             {{- if .Values.redisURL }}
@@ -48,26 +47,26 @@ spec:
               valueFrom:
                 secretKeyRef:
                   key: redis-password
-                  name: {{ include "glitchtip.fullname" . }}-redis
+                  name: {{ include "django.fullname" . }}-redis
             - name: REDIS_HOST
-              value: {{ template "glitchtip.redis.host" . }}
+              value: {{ template "django.redis.host" . }}
             - name: REDIS_PORT
-              value: {{ template "glitchtip.redis.port" . }}
+              value: {{ template "django.redis.port" . }}
             {{- end }}
           envFrom:
             - secretRef:
-                name: {{ include "glitchtip.fullname" . }}
+                name: {{ include "django.fullname" . }}
             - configMapRef:
-                name: {{ include "glitchtip.fullname" . }}
-      {{- with .Values.nodeSelector }}
+                name: {{ include "django.fullname" . }}
+      {{- with .Values.worker.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-    {{- with .Values.affinity }}
+    {{- with .Values.worker.affinity }}
       affinity:
         {{- toYaml . | nindent 8 }}
     {{- end }}
-    {{- with .Values.tolerations }}
+    {{- with .Values.worker.tolerations }}
       tolerations:
         {{- toYaml . | nindent 8 }}
     {{- end }}

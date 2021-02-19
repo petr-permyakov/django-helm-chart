@@ -1,9 +1,9 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: {{ include "glitchtip.fullname" . }}
+  name: {{ include "django.fullname" . }}
   labels:
-    {{- include "glitchtip.labels" . | nindent 4 }}
+    {{- include "django.labels" . | nindent 4 }}
   annotations:
     "helm.sh/hook-weight": "-1"
 data:
