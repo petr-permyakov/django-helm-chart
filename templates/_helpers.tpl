@@ -2,7 +2,7 @@
 {{/*
 Expand the name of the chart.
 */}}
-{{- define "glitchtip.name" -}}
+{{- define "django.name" -}}
 {{- default .Chart.Name .Values.nameOverride | trunc 63 | trimSuffix "-" -}}
 {{- end -}}
 
@@ -11,7 +11,7 @@ Create a default fully qualified app name.
 We truncate at 63 chars because some Kubernetes name fields are limited to this (by the DNS naming spec).
 If release name contains chart name it will be used as a full name.
 */}}
-{{- define "glitchtip.fullname" -}}
+{{- define "django.fullname" -}}
 {{- if .Values.fullnameOverride -}}
 {{- .Values.fullnameOverride | trunc 63 | trimSuffix "-" -}}
 {{- else -}}
@@ -27,16 +27,16 @@ If release name contains chart name it will be used as a full name.
 {{/*
 Create chart name and version as used by the chart label.
 */}}
-{{- define "glitchtip.chart" -}}
+{{- define "django.chart" -}}
 {{- printf "%s-%s" .Chart.Name .Chart.Version | replace "+" "_" | trunc 63 | trimSuffix "-" -}}
 {{- end -}}
 
 {{/*
 Common labels
 */}}
-{{- define "glitchtip.labels" -}}
-helm.sh/chart: {{ include "glitchtip.chart" . }}
-{{ include "glitchtip.selectorLabels" . }}
+{{- define "django.labels" -}}
+helm.sh/chart: {{ include "django.chart" . }}
+{{ include "django.selectorLabels" . }}
 {{- if .Chart.AppVersion }}
 app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
 {{- end }}
@@ -46,17 +46,17 @@ app.kubernetes.io/managed-by: {{ .Release.Service }}
 {{/*
 Selector labels
 */}}
-{{- define "glitchtip.selectorLabels" -}}
-app.kubernetes.io/name: {{ include "glitchtip.name" . }}
+{{- define "django.selectorLabels" -}}
+app.kubernetes.io/name: {{ include "django.name" . }}
 app.kubernetes.io/instance: {{ .Release.Name }}
 {{- end -}}
 
 {{/*
 Create the name of the service account to use
 */}}
-{{- define "glitchtip.serviceAccountName" -}}
+{{- define "django.serviceAccountName" -}}
 {{- if .Values.serviceAccount.create -}}
-    {{ default (include "glitchtip.fullname" .) .Values.serviceAccount.name }}
+    {{ default (include "django.fullname" .) .Values.serviceAccount.name }}
 {{- else -}}
     {{ default "default" .Values.serviceAccount.name }}
 {{- end -}}
@@ -66,7 +66,7 @@ Create the name of the service account to use
 Create a default fully qualified app name.
 We truncate at 63 chars because some Kubernetes name fields are limited to this (by the DNS naming spec).
 */}}
-{{- define "glitchtip.postgresql.fullname" -}}
+{{- define "django.postgresql.fullname" -}}
 {{- if .Values.postgresql.fullnameOverride -}}
 {{- .Values.postgresql.fullnameOverride | trunc 63 | trimSuffix "-" -}}
 {{- else -}}
@@ -74,11 +74,11 @@ We truncate at 63 chars because some Kubernetes name fields are limited to this 
 {{- if contains $name .Release.Name -}}
 {{- .Release.Name | trunc 63 | trimSuffix "-" -}}
 {{- else -}}
-{{- printf "%s-%s" .Release.Name "glitchtip-postgresql" | trunc 63 | trimSuffix "-" -}}
+{{- printf "%s-%s" .Release.Name "django-postgresql" | trunc 63 | trimSuffix "-" -}}
 {{- end -}}
 {{- end -}}
 {{- end -}}
-{{- define "glitchtip.redis.fullname" -}}
+{{- define "django.redis.fullname" -}}
 {{- if .Values.redis.fullnameOverride -}}
 {{- .Values.redis.fullnameOverride | trunc 63 | trimSuffix "-" -}}
 {{- else -}}
@@ -86,7 +86,7 @@ We truncate at 63 chars because some Kubernetes name fields are limited to this 
 {{- if contains $name .Release.Name -}}
 {{- .Release.Name | trunc 63 | trimSuffix "-" -}}
 {{- else -}}
-{{- printf "%s-%s" .Release.Name "glitchtip-redis" | trunc 63 | trimSuffix "-" -}}
+{{- printf "%s-%s" .Release.Name "django-redis" | trunc 63 | trimSuffix "-" -}}
 {{- end -}}
 {{- end -}}
 {{- end -}}
@@ -94,9 +94,9 @@ We truncate at 63 chars because some Kubernetes name fields are limited to this 
 {{/*
 Set redis host
 */}}
-{{- define "glitchtip.redis.host" -}}
+{{- define "django.redis.host" -}}
 {{- if .Values.redis.enabled -}}
-{{- template "glitchtip.redis.fullname" . -}}-redis-master
+{{- template "django.redis.fullname" . -}}-redis-master
 {{- else -}}
 {{- .Values.redis.host | quote -}}
 {{- end -}}
@@ -105,16 +105,16 @@ Set redis host
 {{/*
 Set redis url
 */}}
-{{- define "glitchtip.redis.url" -}}
+{{- define "django.redis.url" -}}
 {{- if .Values.redis.enabled -}}
-redis://{{- template "glitchtip.redis.password" -}}{{- template "glitchtip.redis.fullname" . -}}-master
+redis://{{- template "django.redis.password" -}}{{- template "django.redis.fullname" . -}}-master
 {{- end -}}
 {{- end -}}
 
 {{/*
 Set redis port
 */}}
-{{- define "glitchtip.redis.port" -}}
+{{- define "django.redis.port" -}}
 {{- if .Values.redis.enabled -}}
     "6379"
 {{- else -}}
