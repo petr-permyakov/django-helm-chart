@@ -24,9 +24,7 @@ spec:
         env:
           - name: DEBUG
             value: "False"
-          - name: STATIC_URL
-            value: /
           - name: DATABASE_URL
-            value: {{ required "databaseURL is a required value." .Values.databaseURL }}
+            value: {{ required "env.secret.DATABASE_URL is a required value." .Values.env.secret.DATABASE_URL }}
           - name: SECRET_KEY
             value: {{ required "secretKey is a required value." .Values.secretKey }}

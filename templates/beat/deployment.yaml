@@ -43,21 +43,6 @@ spec:
           env:
             - name: SERVER_ROLE
               value: "beat"
-            {{- if .Values.redisURL }}
-            - name: REDIS_URL
-              value: {{ .Values.redisURL }}
-            {{- end }}
-            {{- if .Values.redis.enabled }}
-            - name: REDIS_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  key: redis-password
-                  name: {{ include "django.fullname" . }}-redis
-            - name: REDIS_HOST
-              value: {{ template "django.redis.host" . }}
-            - name: REDIS_PORT
-              value: {{ template "django.redis.port" . }}
-            {{- end }}
           envFrom:
             - secretRef:
                 name: {{ include "django.fullname" . }}

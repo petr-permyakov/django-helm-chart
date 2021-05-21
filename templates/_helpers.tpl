@@ -92,6 +92,15 @@ We truncate at 63 chars because some Kubernetes name fields are limited to this 
 {{- end -}}
 
 {{/*
+Set postgresql url
+*/}}
+{{- define "django.postgresql.url" -}}
+{{- if .Values.postgresql.enabled -}}
+postgres://{{ .Values.postgresql.postgresqlUsername }}:{{ .Values.postgresql.postgresqlPassword }}@{{- template "django.postgresql.fullname" . -}}:{{- template "django.postgresql.port" . -}}/{{ .Values.postgresql.postgresqlDatabase }}
+{{- end -}}
+{{- end -}}
+
+{{/*
 Set redis host
 */}}
 {{- define "django.redis.host" -}}
