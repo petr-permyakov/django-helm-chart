@@ -96,7 +96,7 @@ Set postgresql url
 */}}
 {{- define "django.postgresql.url" -}}
 {{- if .Values.postgresql.enabled -}}
-postgres://{{ .Values.postgresql.postgresqlUsername }}:{{ .Values.postgresql.postgresqlPassword }}@{{- template "django.postgresql.fullname" . -}}:{{- template "django.postgresql.port" . -}}/{{ .Values.postgresql.postgresqlDatabase }}
+postgres://{{ .Values.postgresql.postgresqlUsername }}:{{ .Values.postgresql.postgresqlPassword }}@{{- template "django.postgresql.fullname" . -}}
 {{- end -}}
 {{- end -}}
 

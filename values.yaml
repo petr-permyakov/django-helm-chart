@@ -117,3 +117,4 @@ redis:
 # Default to disabled, use a managed database service. But can be enabled here.
 postgresql:
   enabled: false
+  postgresqlPassword: # Must be set

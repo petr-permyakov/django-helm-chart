@@ -24,7 +24,12 @@ spec:
         env:
           - name: DEBUG
             value: "False"
+{{- if .Values.env.secret.DATABASE_URL }}
           - name: DATABASE_URL
             value: {{ required "env.secret.DATABASE_URL is a required value." .Values.env.secret.DATABASE_URL }}
+{{- else if .Values.postgresql.enabled }}
+          - name: DATABASE_URL
+            value: {{ include "django.postgresql.url" . | b64enc | quote }}
+{{- end }}
           - name: SECRET_KEY
             value: {{ required "secretKey is a required value." .Values.secretKey }}
