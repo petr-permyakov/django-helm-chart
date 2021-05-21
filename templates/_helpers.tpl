@@ -107,7 +107,7 @@ Set redis url
 */}}
 {{- define "django.redis.url" -}}
 {{- if .Values.redis.enabled -}}
-redis://{{- template "django.redis.password" -}}{{- template "django.redis.fullname" . -}}-master
+redis://:{{ .Values.redis.password }}@{{- template "django.redis.fullname" . -}}-redis-master:{{- template "django.redis.port" . -}}/0
 {{- end -}}
 {{- end -}}
 
@@ -116,8 +116,8 @@ Set redis port
 */}}
 {{- define "django.redis.port" -}}
 {{- if .Values.redis.enabled -}}
-    "6379"
+    6379
 {{- else -}}
-{{- default "6379" .Values.redis.port | quote -}}
+{{- default "6379" .Values.redis.port -}}
 {{- end -}}
 {{- end -}}

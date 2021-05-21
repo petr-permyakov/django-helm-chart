@@ -1,4 +1,4 @@
-# Default values for glitchtip.
+# Default values for django.
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
 
@@ -10,16 +10,13 @@ image:
 imagePullSecrets: []
 nameOverride: ""
 fullnameOverride: ""
-databaseURL:
-secretKey:
-redisURL:
-# Only needed when using stripe for saas environment
-stripeLiveSecretKey:
-djstripeWebhookSecret: 
 
-environmentVariables:
-  ENABLE_SOCIAL_AUTH: false
-  GLITCHTIP_DOMAIN: https://example.com
+secretKey:
+env:
+  normal: []
+  secrets: []
+    # DATABASE_URL:
+    # REDIS_URL:
 
 web:
   replicaCount: 2
