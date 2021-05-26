@@ -3,7 +3,7 @@
 # Declare variables to be passed into your templates.
 
 image:
-  repository: glitchtip/glitchtip
+  repository: glitchtip/glitchtip  # Demo app, change this.
   tag: latest
   pullPolicy: Always
 
@@ -11,10 +11,10 @@ imagePullSecrets: []
 nameOverride: ""
 fullnameOverride: ""
 
-secretKey:
 env:
   normal: []
   secrets: []
+    # SECRET_KEY:
     # DATABASE_URL:
     # REDIS_URL:
 
@@ -38,18 +38,18 @@ web:
       memory: 128Mi
   nodeSelector: {}
   tolerations: []
-  affinity:
-    podAntiAffinity:
-      preferredDuringSchedulingIgnoredDuringExecution:
-      - weight: 100
-        podAffinityTerm:
-          labelSelector:
-            matchExpressions:
-            - key: app.kubernetes.io/instance
-              operator: In
-              values:
-              - glitchtip-prod-web
-          topologyKey: kubernetes.io/hostname
+  affinity: []
+    # podAntiAffinity:
+    #   preferredDuringSchedulingIgnoredDuringExecution:
+    #   - weight: 100
+    #     podAffinityTerm:
+    #       labelSelector:
+    #         matchExpressions:
+    #         - key: app.kubernetes.io/instance
+    #           operator: In
+    #           values:
+    #           - glitchtip-prod-web
+    #       topologyKey: kubernetes.io/hostname
   livenessProbe:
     failureThreshold: 5
     initialDelaySeconds: 5

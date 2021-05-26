@@ -15,6 +15,10 @@ spec:
   activeDeadlineSeconds: 600
   template:
     spec:
+    {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
       restartPolicy: Never
       containers:
       - name: pre-install-job
@@ -26,10 +30,10 @@ spec:
             value: "False"
 {{- if .Values.env.secret.DATABASE_URL }}
           - name: DATABASE_URL
-            value: {{ required "env.secret.DATABASE_URL is a required value." .Values.env.secret.DATABASE_URL }}
+            value: {{ .Values.env.secret.DATABASE_URL }}
 {{- else if .Values.postgresql.enabled }}
           - name: DATABASE_URL
             value: {{ include "django.postgresql.url" . | b64enc | quote }}
 {{- end }}
           - name: SECRET_KEY
-            value: {{ required "secretKey is a required value." .Values.secretKey }}
+            value: {{ required "env.secret.SECRET_KEY is a required value." .Values.env.secret.SECRET_KEY }}
