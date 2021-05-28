@@ -1,6 +1,11 @@
 image:
-  name: alpine/helm:3.2.4
+  name: alpine/helm:3.5.4
   entrypoint: ["/bin/sh", "-c"]
+
+lint:
+  stage: test
+  script:
+    - helm lint
 
 pages:
   stage: deploy

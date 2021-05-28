@@ -78,16 +78,26 @@ We truncate at 63 chars because some Kubernetes name fields are limited to this 
 {{- end -}}
 {{- end -}}
 {{- end -}}
+
 {{- define "django.redis.fullname" -}}
 {{- if .Values.redis.fullnameOverride -}}
 {{- .Values.redis.fullnameOverride | trunc 63 | trimSuffix "-" -}}
 {{- else -}}
-{{- $name := default .Chart.Name .Values.redis.nameOverride -}}
+{{- $name := default .Chart.Name -}}
 {{- if contains $name .Release.Name -}}
 {{- .Release.Name | trunc 63 | trimSuffix "-" -}}
 {{- else -}}
-{{- printf "%s-%s" .Release.Name "django-redis" | trunc 63 | trimSuffix "-" -}}
+{{- printf "%s-%s" .Release.Name "redis-master" | trunc 63 | trimSuffix "-" -}}
 {{- end -}}
+{{- end -}}
+{{- end -}}
+
+{{/*
+Set postgresql url
+*/}}
+{{- define "django.postgresql.url" -}}
+{{- if .Values.postgresql.enabled -}}
+postgres://{{ .Values.postgresql.postgresqlUsername }}:{{ .Values.postgresql.postgresqlPassword }}@{{- template "django.postgresql.fullname" . -}}
 {{- end -}}
 {{- end -}}
 
@@ -107,7 +117,7 @@ Set redis url
 */}}
 {{- define "django.redis.url" -}}
 {{- if .Values.redis.enabled -}}
-redis://{{- template "django.redis.password" -}}{{- template "django.redis.fullname" . -}}-master
+redis://:{{ .Values.redis.auth.password }}@{{- template "django.redis.fullname" . -}}:{{- template "django.redis.port" . -}}/0
 {{- end -}}
 {{- end -}}
 
@@ -116,8 +126,8 @@ Set redis port
 */}}
 {{- define "django.redis.port" -}}
 {{- if .Values.redis.enabled -}}
-    "6379"
+    6379
 {{- else -}}
-{{- default "6379" .Values.redis.port | quote -}}
+{{- default "6379" .Values.redis.port -}}
 {{- end -}}
 {{- end -}}
