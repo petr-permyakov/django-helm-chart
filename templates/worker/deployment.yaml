@@ -1,3 +1,4 @@
+{{- if .Values.worker.enabled -}}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -38,21 +39,6 @@ spec:
           env:
             - name: SERVER_ROLE
               value: "worker"
-            {{- if .Values.redisURL }}
-            - name: REDIS_URL
-              value: {{ .Values.redisURL }}
-            {{- end }}
-            {{- if .Values.redis.enabled }}
-            - name: REDIS_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  key: redis-password
-                  name: {{ include "django.fullname" . }}-redis
-            - name: REDIS_HOST
-              value: {{ template "django.redis.host" . }}
-            - name: REDIS_PORT
-              value: {{ template "django.redis.port" . }}
-            {{- end }}
           envFrom:
             - secretRef:
                 name: {{ include "django.fullname" . }}
@@ -70,3 +56,4 @@ spec:
       tolerations:
         {{- toYaml . | nindent 8 }}
     {{- end }}
+{{- end }}
