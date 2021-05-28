@@ -107,12 +107,10 @@ redis:
   master:
     persistence:
       enabled: false
-  slave:
+  replica:
+    replicaCount: 1
     persistence:
       enabled: false
-  cluster:
-    enabled: false
-    slaveCount: 1
 
 # Default to disabled, use a managed database service. But can be enabled here.
 postgresql:

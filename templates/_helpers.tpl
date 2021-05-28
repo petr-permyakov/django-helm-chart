@@ -78,15 +78,16 @@ We truncate at 63 chars because some Kubernetes name fields are limited to this 
 {{- end -}}
 {{- end -}}
 {{- end -}}
+
 {{- define "django.redis.fullname" -}}
 {{- if .Values.redis.fullnameOverride -}}
 {{- .Values.redis.fullnameOverride | trunc 63 | trimSuffix "-" -}}
 {{- else -}}
-{{- $name := default .Chart.Name .Values.redis.nameOverride -}}
+{{- $name := default .Chart.Name -}}
 {{- if contains $name .Release.Name -}}
 {{- .Release.Name | trunc 63 | trimSuffix "-" -}}
 {{- else -}}
-{{- printf "%s-%s" .Release.Name "django-redis" | trunc 63 | trimSuffix "-" -}}
+{{- printf "%s-%s" .Release.Name "redis-master" | trunc 63 | trimSuffix "-" -}}
 {{- end -}}
 {{- end -}}
 {{- end -}}
@@ -116,7 +117,7 @@ Set redis url
 */}}
 {{- define "django.redis.url" -}}
 {{- if .Values.redis.enabled -}}
-redis://:{{ .Values.redis.password }}@{{- template "django.redis.fullname" . -}}-redis-master:{{- template "django.redis.port" . -}}/0
+redis://:{{ .Values.redis.auth.password }}@{{- template "django.redis.fullname" . -}}:{{- template "django.redis.port" . -}}/0
 {{- end -}}
 {{- end -}}
 
