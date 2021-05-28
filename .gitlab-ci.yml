@@ -13,7 +13,7 @@ pages:
     - mkdir public
     - helm package .
     - helm repo index --url https://${CI_PROJECT_NAMESPACE}.gitlab.io/${CI_PROJECT_NAME} .
-    - mv index.yaml glitchtip-*.tgz ./public
+    - mv index.yaml django-*.tgz ./public
   artifacts:
     paths:
       - public

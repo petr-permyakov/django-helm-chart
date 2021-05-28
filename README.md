@@ -21,9 +21,9 @@ urlpatterns = [
 
 # Usage
 
-1. Add our Helm chart repo `helm repo add glitchtip https://glitchtip.gitlab.io/glitchtip-helm-chart/`
+1. Add our Helm chart repo `helm repo add django https://burke-software.gitlab.io/django-helm-chart/`
 2. Review our values.yaml. At a minimum you'll need to set SECRET_KEY.
-3. Install the chart `helm install glitchtip/glitchtip --set databaseURL=your_db --set secretKey=random_string`
+3. Install the chart `helm install burke-software/django --set databaseURL=your_db --set secretKey=random_string`
 
 # Tips
 
