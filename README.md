@@ -6,7 +6,7 @@ A generic Django (plus Celery) Helm chart.
 
 This chart supports a web plus optional celery and beat deployments. Be prepared to extend it as necessary.
 
-Django settings will be managed by environment variables. `os.getenv` is fine. `django-environ` is nice as well. This chart expects SECRET_KEY and DATABASE_URL variables. 
+Django settings will be managed by environment variables. `django-environ` works well for this and can parse the DATABASE_URL connection string. This chart expects SECRET_KEY and DATABASE_URL variables.
 
 Kubernetes works best when it is able to determine application health. You Django app should have a `/_health/` view such as
 
@@ -22,8 +22,8 @@ urlpatterns = [
 # Usage
 
 1. Add our Helm chart repo `helm repo add django https://burke-software.gitlab.io/django-helm-chart/`
-2. Review our values.yaml. At a minimum you'll need to set SECRET_KEY.
-3. Install the chart `helm install burke-software/django --set databaseURL=your_db --set secretKey=random_string`
+2. Review our values.yaml. At a minimum you'll need to set env.secret.SECRET_KEY and env.secret.DATABASE_URL.
+3. Install the chart `helm install your-app django/django -f your-values.yml`
 
 # Tips
 
