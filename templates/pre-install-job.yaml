@@ -37,3 +37,7 @@ spec:
 {{- end }}
           - name: SECRET_KEY
             value: {{ required "env.secret.SECRET_KEY is a required value." .Values.env.secret.SECRET_KEY }}
+        {{- range $k, $v := .Values.env.normal }}
+          - name: {{ $k }}
+            value: {{ $v | quote }}
+        {{- end }}
