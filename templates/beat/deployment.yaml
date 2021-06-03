@@ -31,11 +31,8 @@ spec:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
       containers:
         - name: {{ .Chart.Name }}
-          {{- if .Values.beat.command }}
-          command: {{ .Values.beat.command }}
-          {{- end }}
           {{- if .Values.beat.args }}
-          args: {{ .Values.beat.args }}
+          args: {{- toYaml .Values.beat.args | nindent 10}}
           {{- end }}
           securityContext:
             {{- toYaml .Values.securityContext | nindent 12 }}

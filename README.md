@@ -25,13 +25,15 @@ Set the value web.livenessProbe.path and web.readinessProbe.path to change the U
 
 This helm chart will set a "role" environment variable to web, worker, or beat. Your Docker image could read this variable and run the correct command.
 
-Alternatively, set the service.command. For example:
+Alternatively, set the service.args. For example:
 
 ```
 web:
-  command:
+  args:
     - run_it
 ```
+
+Remember that Kubernetes "args" are Docker's CMD (or command). Pretty confusing!
 
 # Usage
 

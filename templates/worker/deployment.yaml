@@ -30,11 +30,8 @@ spec:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
       containers:
         - name: {{ .Chart.Name }}
-          {{- if .Values.worker.command }}
-          command: {{ .Values.worker.command }}
-          {{- end }}
           {{- if .Values.worker.args }}
-          args: {{ .Values.worker.args }}
+          args: {{- toYaml .Values.worker.args | nindent 10}}
           {{- end }}
           securityContext:
             {{- toYaml .Values.securityContext | nindent 12 }}
