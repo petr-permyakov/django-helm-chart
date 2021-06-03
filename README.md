@@ -19,6 +19,12 @@ urlpatterns = [
 ...
 ```
 
+Set the value web.livenessProbe.path and web.readinessProbe.path to change the URL.
+
+## Run commands
+
+This helm chart will set a "role" environment variable to web, worker, or beat. It's up to your Docker image to read this variable and run the correct command.
+
 # Usage
 
 1. Add our Helm chart repo `helm repo add django https://burke-software.gitlab.io/django-helm-chart/`
@@ -55,4 +61,4 @@ Commercial support is available - email info@burkesoftware.com
 
 # Contributing
 
-Contributions are welcome. Report bugs on gitlab issues. Please only open feature requests that you'd like to implement yourself or pay for.
+Contributions are welcome. Report bugs on GitLab issues. Please only open feature requests that you'd like to implement yourself or pay for.

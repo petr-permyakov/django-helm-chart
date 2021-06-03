@@ -54,10 +54,12 @@ web:
     failureThreshold: 5
     initialDelaySeconds: 5
     timeoutSeconds: 2
+    path: "/_health/"
   readinessProbe:
     failureThreshold: 10
     initialDelaySeconds: 5
     timeoutSeconds: 2
+    path: "/_health/"
   service:
     type: ClusterIP
     port: 80
