@@ -23,7 +23,15 @@ Set the value web.livenessProbe.path and web.readinessProbe.path to change the U
 
 ## Run commands
 
-This helm chart will set a "role" environment variable to web, worker, or beat. It's up to your Docker image to read this variable and run the correct command.
+This helm chart will set a "role" environment variable to web, worker, or beat. Your Docker image could read this variable and run the correct command.
+
+Alternatively, set the service.command. For example:
+
+```
+web:
+  command:
+    - run_it
+```
 
 # Usage
 
