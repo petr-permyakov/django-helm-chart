@@ -44,20 +44,20 @@ spec:
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           ports:
             - name: http
-              containerPort: 8080
+              containerPort: {{ .Values.web.port | default 8080 }}
               protocol: TCP
           livenessProbe:
             failureThreshold: {{ .Values.web.livenessProbe.failureThreshold }}
             httpGet:
               path: {{ .Values.web.livenessProbe.path | default "/_health/" }}
-              port: 8080
+              port: {{ .Values.web.port | default 8080 }}
             initialDelaySeconds: {{ .Values.web.livenessProbe.initialDelaySeconds }}
             timeoutSeconds: {{ .Values.web.livenessProbe.timeoutSeconds }}
           readinessProbe:
             failureThreshold: {{ .Values.web.readinessProbe.failureThreshold }}
             httpGet:
               path: {{ .Values.web.readinessProbe.path | default "/_health/" }}
-              port: 8080
+              port: {{ .Values.web.port | default 8080 }}
             initialDelaySeconds: {{ .Values.web.readinessProbe.initialDelaySeconds }}
             timeoutSeconds: {{ .Values.web.readinessProbe.timeoutSeconds }}
           resources:

@@ -20,6 +20,7 @@ env:
 
 web:
   replicaCount: 2
+  port: 8080
   autoscaling:
     enabled: false
     minReplicas: 1
