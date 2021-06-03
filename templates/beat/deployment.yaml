@@ -1,4 +1,5 @@
 {{- if .Values.worker.enabled -}}
+{{- if .Values.beat.enabled -}}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -55,4 +56,5 @@ spec:
                 name: {{ include "django.fullname" . }}
             - configMapRef:
                 name: {{ include "django.fullname" . }}
+{{- end }}
 {{- end }}
