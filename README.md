@@ -8,7 +8,7 @@ This chart supports a web plus optional celery and beat deployments. Be prepared
 
 Django settings will be managed by environment variables. `django-environ` works well for this and can parse the DATABASE_URL connection string. This chart expects SECRET_KEY and DATABASE_URL variables.
 
-Kubernetes works best when it is able to determine application health. You Django app should have a `/_health/` view such as
+Kubernetes works best when it is able to determine application health. Your Django app should have a `/_health/` view such as
 
 ```
 def health(request):
@@ -44,9 +44,10 @@ Remember that Kubernetes "args" are Docker's CMD (or command). Pretty confusing!
 # Tips
 
 - Do you really need kubernetes? It's very complex.
-- Don't use helm without [helm diff](https://github.com/databus23/helm-diff). One typo will wipe your app without warning otherwise.
+- Use [helm diff](https://github.com/databus23/helm-diff). One typo will wipe your app without warning otherwise.
 - While supported, I don't suggest running stateful services like PostgreSQL in kubernetes. Upgrades will likely involve downtime or extensive and arcane knowledge.
 - It's fine to use this chart as a reference for your own chart instead of directly using it.
+- I don't publish versions or changelogs at this time. You should probably fork this repo.
 
 ## Managing environment variables and secrets
 
