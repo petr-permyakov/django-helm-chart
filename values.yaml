@@ -23,13 +23,13 @@ web:
   port: 8080
   autoscaling:
     enabled: false
-    minReplicas: 1
+    minReplicas: 2
     maxReplicas: 10
     targetCPUUtilizationPercentage: 80
     # targetMemoryUtilizationPercentage: 80
 
   budget:
-    minAvailable: 1
+    minAvailable: 1 # Ignored when replicaCount is 1
   resources:
     limits:
       cpu: 1000m
