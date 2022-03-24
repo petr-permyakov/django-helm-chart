@@ -72,7 +72,7 @@ We truncate at 63 chars because some Kubernetes name fields are limited to this 
 {{- else -}}
 {{- $name := default .Chart.Name .Values.postgresql.nameOverride -}}
 {{- if contains $name .Release.Name -}}
-{{- .Release.Name | trunc 63 | trimSuffix "-" -}}
+{{- .Release.Name | trunc 63 | trimSuffix "-" -}}-postgresql
 {{- else -}}
 {{- printf "%s-%s" .Release.Name "django-postgresql" | trunc 63 | trimSuffix "-" -}}
 {{- end -}}
