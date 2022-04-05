@@ -64,6 +64,10 @@ spec:
               valueFrom:
                 fieldRef:
                   fieldPath: status.podIP
+{{- if .Values.env.secret.DATABASE_URL }}
+            - name: DATABASE_URL
+              value: {{ .Values.env.secret.DATABASE_URL }}
+{{- end }}
           envFrom:
             - secretRef:
                 name: {{ include "django.fullname" . }}

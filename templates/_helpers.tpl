@@ -74,7 +74,7 @@ We truncate at 63 chars because some Kubernetes name fields are limited to this 
 {{- if contains $name .Release.Name -}}
 {{- .Release.Name | trunc 63 | trimSuffix "-" -}}
 {{- else -}}
-{{- printf "%s-%s" .Release.Name "django-postgresql" | trunc 63 | trimSuffix "-" -}}
+{{- printf "%s-%s" .Release.Name "postgresql" | trunc 63 | trimSuffix "-" -}}
 {{- end -}}
 {{- end -}}
 {{- end -}}
@@ -93,11 +93,38 @@ We truncate at 63 chars because some Kubernetes name fields are limited to this 
 {{- end -}}
 
 {{/*
-Set postgresql url
+Set postgresql host
 */}}
-{{- define "django.postgresql.url" -}}
+{{- define "django.postgresql.host" -}}
 {{- if .Values.postgresql.enabled -}}
-postgres://{{ .Values.postgresql.postgresqlUsername }}:{{ .Values.postgresql.postgresqlPassword }}@{{- template "django.postgresql.fullname" . -}}
+{{- template "django.postgresql.fullname" . -}}
+{{- end -}}
+{{- end -}}
+
+{{/*
+Set postgresql username
+*/}}
+{{- define "django.postgresql.username" -}}
+{{- if .Values.postgresql.enabled -}}
+{{ .Values.postgresql.auth.username | default "postgres" }}
+{{- end -}}
+{{- end -}}
+
+{{/*
+Set postgresql name
+*/}}
+{{- define "django.postgresql.name" -}}
+{{- if .Values.postgresql.enabled -}}
+{{ .Values.postgresql.auth.database | default "postgres" }}
+{{- end -}}
+{{- end -}}
+
+{{/*
+Set postgresql port
+*/}}
+{{- define "django.postgresql.port" -}}
+{{- if .Values.postgresql.enabled -}}
+{{ .Values.postgresql.global.postgresql.service.ports.postgresql | default 5432 }}
 {{- end -}}
 {{- end -}}
 

@@ -31,9 +31,13 @@ spec:
 {{- if .Values.env.secret.DATABASE_URL }}
           - name: DATABASE_URL
             value: {{ .Values.env.secret.DATABASE_URL }}
-{{- else if .Values.postgresql.enabled }}
-          - name: DATABASE_URL
-            value: {{ include "django.postgresql.url" . | b64enc | quote }}
+{{- end }}
+{{- if .Values.postgresql.enabled }}
+          - name: DATABASE_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: {{ include "django.postgresql.fullname" . }}
+                key: postgres-password
 {{- end }}
           - name: SECRET_KEY
             value: {{ required "env.secret.SECRET_KEY is a required value." .Values.env.secret.SECRET_KEY }}
@@ -41,3 +45,6 @@ spec:
           - name: {{ $k }}
             value: {{ $v | quote }}
         {{- end }}
+        envFrom:
+          - configMapRef:
+              name: {{ include "django.fullname" . }}
