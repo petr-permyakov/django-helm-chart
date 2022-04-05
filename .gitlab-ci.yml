@@ -1,5 +1,5 @@
 image:
-  name: alpine/helm:3.5.4
+  name: alpine/helm:3.6.3
   entrypoint: ["/bin/sh", "-c"]
 
 lint:

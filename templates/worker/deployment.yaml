@@ -42,6 +42,10 @@ spec:
           env:
             - name: SERVER_ROLE
               value: "worker"
+{{- if .Values.env.secret.DATABASE_URL }}
+            - name: DATABASE_URL
+              value: {{ .Values.env.secret.DATABASE_URL }}
+{{- end }}
           envFrom:
             - secretRef:
                 name: {{ include "django.fullname" . }}
