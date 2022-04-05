@@ -42,9 +42,12 @@ spec:
           env:
             - name: SERVER_ROLE
               value: "worker"
-{{- if .Values.env.secret.DATABASE_URL }}
-            - name: DATABASE_URL
-              value: {{ .Values.env.secret.DATABASE_URL }}
+{{- if .Values.postgresql.enabled }}
+            - name: DATABASE_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "django.postgresql.fullname" . }}
+                  key: postgres-password
 {{- end }}
           envFrom:
             - secretRef:

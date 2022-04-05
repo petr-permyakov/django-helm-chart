@@ -1,7 +1,7 @@
 {{- if or (and .Values.web.autoscaling.enabled (gt (.Values.web.autoscaling.minReplicas | int) 1)) (gt (.Values.web.replicaCount | int) 1) }}
 {{- if .Values.web.budget -}}
 {{- if .Values.web.budget.minAvailable -}}
-apiVersion: policy/v1beta1
+apiVersion: policy/v1
 kind: PodDisruptionBudget
 metadata:
   name: {{ include "django.fullname" . }}-web
