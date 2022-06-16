@@ -1,22 +1,26 @@
-image:
-  name: alpine/helm:3.6.3
-  entrypoint: ["/bin/sh", "-c"]
+stages:
+  - build
+  - upload
 
-lint:
-  stage: test
+build:
+  image:
+    name: alpine/helm
+    entrypoint: ["/bin/sh", "-c"]
+  stage: build
   script:
     - helm lint
-
-pages:
-  stage: deploy
-  script:
-    - mkdir public
-    - helm package .
-    - helm repo index --url https://${CI_PROJECT_NAMESPACE}.gitlab.io/${CI_PROJECT_NAME} .
-    - mv index.yaml django-*.tgz ./public
+    - helm package -d chart .
+    - mv chart/django*.tgz chart/django.tgz
   artifacts:
     paths:
-      - public
+      - chart
+
+upload:
+  image: curlimages/curl:latest
+  stage: upload
+  dependencies:
+    - build
+  script:
+    - 'curl --request POST --user gitlab-ci-token:$CI_JOB_TOKEN --form "chart=@chart/django.tgz" "${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/helm/api/stable/charts"'
   only:
-    - master
     - tags
