@@ -37,17 +37,17 @@ Remember that Kubernetes "args" are Docker's CMD (or command). Pretty confusing!
 
 # Usage
 
-1. Add our Helm chart repo `helm repo add django https://burke-software.gitlab.io/django-helm-chart/`
+1. Add our Helm chart repo `helm repo add django https://gitlab.com/api/v4/projects/26807467/packages/helm/stable`
 2. Review our values.yaml. At a minimum you'll need to set env.secret.SECRET_KEY and env.secret.DATABASE_URL.
 3. Install the chart `helm install your-app django/django -f your-values.yml`
 
 # Tips
 
-- Do you really need kubernetes? It's very complex.
+- Do you really need kubernetes?
 - Use [helm diff](https://github.com/databus23/helm-diff). One typo will wipe your app without warning otherwise.
-- While supported, I don't suggest running stateful services like PostgreSQL in kubernetes. Upgrades will likely involve downtime or extensive and arcane knowledge.
+- While supported, I don't suggest running stateful services like PostgreSQL in kubernetes. There is no clean way to run major upgrades.
 - It's fine to use this chart as a reference for your own chart instead of directly using it.
-- I don't publish versions or changelogs at this time. You should probably fork this repo.
+- I don't publish changelogs at this time. You may wish to fork this repo.
 
 ## Managing environment variables and secrets
 
@@ -59,7 +59,7 @@ I suggest either
 
 ## Deploying in CI
 
-I use lwolf/helm-kubectl-docker with Gitlab CI. [Example](https://gitlab.com/glitchtip/glitchtip-frontend/-/blob/master/.gitlab-ci.yml).
+I use `alpine/helm` with Gitlab CI. [Example](https://gitlab.com/glitchtip/glitchtip-frontend/-/blob/master/.gitlab-ci.yml).
 
 # Support development
 
