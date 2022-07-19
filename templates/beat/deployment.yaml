@@ -60,8 +60,6 @@ spec:
                 name: {{ include "django.fullname" . }}
             - configMapRef:
                 name: {{ include "django.fullname" . }}
-{{- end }}
-{{- end }}
         {{- with .Values.beat.nodeSelector }}
           nodeSelector:
             {{- toYaml . | nindent 8 }}
@@ -74,3 +72,5 @@ spec:
           tolerations:
             {{- toYaml . | nindent 8 }}
         {{- end }}
+{{- end }}
+{{- end }}
