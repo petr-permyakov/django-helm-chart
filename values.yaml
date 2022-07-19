@@ -103,6 +103,9 @@ worker:
 
 beat:
   enabled: true
+  nodeSelector: {}
+  tolerations: []
+  affinity: {}
 
 serviceAccount:
   # Specifies whether a service account should be created
