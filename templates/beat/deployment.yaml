@@ -62,3 +62,15 @@ spec:
                 name: {{ include "django.fullname" . }}
 {{- end }}
 {{- end }}
+        {{- with .Values.beat.nodeSelector }}
+          nodeSelector:
+            {{- toYaml . | nindent 8 }}
+          {{- end }}
+        {{- with .Values.beat.affinity }}
+          affinity:
+            {{- toYaml . | nindent 8 }}
+        {{- end }}
+        {{- with .Values.beat.tolerations }}
+          tolerations:
+            {{- toYaml . | nindent 8 }}
+        {{- end }}
