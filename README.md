@@ -2,6 +2,8 @@
 
 A generic Django (plus Celery) Helm chart.
 
+Contributions are welcome as merge requests. Please only open issues that you'd like to implement yourself or fund. Do not open support or feature requests. This chart is **not** intended to cover every use case with Django and Helm. It's a personal project that you are welcome to view and fork. Breaking changes to your workflow may happen at any time and without warning. 
+
 # Preparing your Django app
 
 This chart supports a web plus optional celery and beat deployments. Be prepared to extend it as necessary.
@@ -43,11 +45,9 @@ Remember that Kubernetes "args" are Docker's CMD (or command). Pretty confusing!
 
 # Tips
 
-- Do you really need kubernetes?
 - Use [helm diff](https://github.com/databus23/helm-diff). One typo will wipe your app without warning otherwise.
-- While supported, I don't suggest running stateful services like PostgreSQL in kubernetes. There is no clean way to run major upgrades.
-- It's fine to use this chart as a reference for your own chart instead of directly using it.
-- I don't publish changelogs at this time. You may wish to fork this repo.
+- Stateful services like PostgreSQL in kubernetes are only partially supported. There is no clean way to run major upgrades. I don't recommend using them.
+- Fork instead of using this directly.
 
 ## Managing environment variables and secrets
 
@@ -69,7 +69,3 @@ Maintaining this chart takes time. Considering supporting it by
 - Check out [GlitchTip](https://glitchtip.com) error tracking, which is where this project started
 
 Commercial support is available - email info@burkesoftware.com
-
-# Contributing
-
-Contributions are welcome. Report bugs on GitLab issues. Please only open feature requests that you'd like to implement yourself or pay for.
