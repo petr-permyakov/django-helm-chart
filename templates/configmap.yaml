@@ -13,7 +13,6 @@ data:
   DATABASE_NAME: {{ include "django.postgresql.name" . | quote }}
   DATABASE_PORT: {{ include "django.postgresql.port" . | quote }}
 {{- end }}
-
 {{- range $k, $v := .Values.env.normal }}
   {{ $k }}: {{ $v | quote }}
 {{- end }}
