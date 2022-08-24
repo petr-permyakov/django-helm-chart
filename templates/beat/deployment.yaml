@@ -39,12 +39,7 @@ spec:
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           resources:
-            limits:
-              cpu: 50m
-              memory: 96Mi
-            requests:
-              cpu: 1m
-              memory: 32Mi
+            {{- toYaml .Values.web.resources | nindent 12 }}
           env:
             - name: SERVER_ROLE
               value: "beat"

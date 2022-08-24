@@ -103,6 +103,13 @@ worker:
 
 beat:
   enabled: true
+  resources:
+    limits:
+      cpu: 100m
+      memory: 120Mi
+    requests:
+      cpu: 1m
+      memory: 90Mi
   nodeSelector: {}
   tolerations: []
   affinity: {}
