@@ -74,6 +74,10 @@ spec:
           envFrom:
             - secretRef:
                 name: {{ include "django.fullname" . }}
+            {{- if .Values.existingSecret }}
+            - secretRef:
+                name: {{ .Values.existingSecret }}
+            {{- end }}
             - configMapRef:
                 name: {{ include "django.fullname" . }}
       {{- with .Values.web.nodeSelector }}

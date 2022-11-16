@@ -18,6 +18,8 @@ env:
     # DATABASE_URL:
     # REDIS_URL:
 
+existingSecret: ""
+
 web:
   replicaCount: 2
   port: 8080
