@@ -47,12 +47,16 @@ spec:
             - name: DATABASE_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: {{ include "django.postgresql.fullname" . }}
+                  name: {{ default (include "django.postgresql.fullname" .) .Values.postgresql.auth.existingSecret }}
                   key: postgres-password
 {{- end }}
           envFrom:
             - secretRef:
                 name: {{ include "django.fullname" . }}
+            {{- if .Values.existingSecret }}
+            - secretRef:
+                name: {{ .Values.existingSecret }}
+            {{- end }}
             - configMapRef:
                 name: {{ include "django.fullname" . }}
       {{- with .Values.beat.nodeSelector }}
