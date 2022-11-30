@@ -11,6 +11,10 @@ imagePullSecrets: []
 nameOverride: ""
 fullnameOverride: ""
 
+preInstall:
+  enabled: true
+  activeDeadlineSeconds: 900
+
 env:
   normal: {}
   secret: {}
