@@ -1,5 +1,5 @@
 {{- if .Values.web.autoscaling.enabled -}}
-apiVersion: autoscaling/v2beta1
+apiVersion: autoscaling/v2
 kind: HorizontalPodAutoscaler
 metadata:
   name: {{ template "django.fullname" . }}-web
@@ -13,16 +13,20 @@ spec:
   minReplicas: {{ .Values.web.autoscaling.minReplicas }}
   maxReplicas: {{ .Values.web.autoscaling.maxReplicas }}
   metrics:
-    {{- if .Values.web.autoscaling.targetCPUUtilizationPercentage }}
+    {{- if .Values.web.autoscaling.targetCPU }}
     - type: Resource
       resource:
         name: cpu
-        targetAverageUtilization: {{ .Values.web.autoscaling.targetCPUUtilizationPercentage }}
+        target:
+          type: "Utilization"
+          averageUtilization: {{ .Values.web.autoscaling.targetCPU }}
     {{- end }}
-    {{- if .Values.web.autoscaling.targetMemoryUtilizationPercentage }}
+    {{- if .Values.web.autoscaling.targetMemory }}
     - type: Resource
       resource:
         name: memory
-        targetAverageUtilization: {{ .Values.web.autoscaling.targetMemoryUtilizationPercentage }}
+        target:
+          type: "Utilization"
+          averageUtilization: {{ .Values.web.autoscaling.targetMemory }}
     {{- end }}
 {{- end }}
