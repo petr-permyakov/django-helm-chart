@@ -37,7 +37,10 @@ spec:
             {{- toYaml .Values.securityContext | nindent 12 }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
-          containerPort: 5555
+          ports:
+          - containerPort: 5555
+            name: http
+            protocol: TCP
           resources:
             {{- toYaml .Values.flower.resources | nindent 12 }}
           env:
