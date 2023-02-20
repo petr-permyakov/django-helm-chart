@@ -45,6 +45,7 @@ web:
       memory: 128Mi
   nodeSelector: {}
   tolerations: []
+  podAnnotations: {}
   affinity: {}
     # podAntiAffinity:
     #   preferredDuringSchedulingIgnoredDuringExecution:
@@ -105,6 +106,7 @@ worker:
       memory: 128Mi
   nodeSelector: {}
   tolerations: []
+  podAnnotations: {}
   affinity: {}
 
 beat:
@@ -118,6 +120,7 @@ beat:
       memory: 90Mi
   nodeSelector: {}
   tolerations: []
+  podAnnotations: {}
   affinity: {}
 
 flower:
@@ -131,6 +134,7 @@ flower:
       memory: 256Mi
   nodeSelector: {}
   tolerations: []
+  podAnnotations: {}
   affinity: {}
   service:
     type: ClusterIP

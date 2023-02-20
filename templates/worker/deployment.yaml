@@ -18,6 +18,9 @@ spec:
         checksum/secret: {{ include (print $.Template.BasePath "/secrets.yaml") . | sha256sum }}
         checksum/configmap: {{ include (print $.Template.BasePath "/configmap.yaml") . | sha256sum }}
         tag: "{{ .Values.image.tag }}"
+        {{- if .Values.worker.podAnnotations }}
+        {{- include "common.tplvalues.render" ( dict "value" .Values.worker.podAnnotations "context" $ ) | nindent 8 }}
+        {{- end }}
       labels:
         {{- include "django.selectorLabels" . | nindent 8 }}
         app.kubernetes.io/component: worker
