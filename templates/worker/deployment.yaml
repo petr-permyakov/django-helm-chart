@@ -47,7 +47,7 @@ spec:
             periodSeconds: {{ .Values.worker.livenessProbe.periodSeconds }}
             timeoutSeconds: {{ .Values.worker.livenessProbe.timeoutSeconds }}
             exec:
-              command: {{ .Values.worker.livenessProbe.command }}
+              command: {{- toYaml .Values.worker.livenessProbe.command | nindent 14 }}
           {{- end }}
           resources:
             {{- toYaml .Values.worker.resources | nindent 12 }}
