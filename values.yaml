@@ -97,13 +97,15 @@ worker:
     maxReplicas: 100
     targetCPUUtilizationPercentage: 90
     # targetMemoryUtilizationPercentage: 80
-  livenessProbe:
-    enabled: false
-    initialDelaySeconds: 30
-    periodSeconds: 300
-    timeoutSeconds: 30
-    command: 
-      - "celery -A django inspect ping -d celery@$HOSTNAME"
+  livenessProbe: {}
+    # initialDelaySeconds: 10
+    # periodSeconds: 60
+    # timeoutSeconds: 30
+    # exec:
+    #   command:
+    #     - "bash"
+    #     - "-c"
+    #     - "celery -A django inspect ping -d celery@$HOSTNAME | grep -q OK"
   resources:
     limits:
       cpu: 900m

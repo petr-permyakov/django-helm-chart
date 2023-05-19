@@ -41,13 +41,9 @@ spec:
             {{- toYaml .Values.securityContext | nindent 12 }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
-          {{- if .Values.worker.livenessProbe.enabled }}
+          {{- if .Values.worker.livenessProbe }}
           livenessProbe:
-            initialDelaySeconds: {{ .Values.worker.livenessProbe.initialDelaySeconds }}
-            periodSeconds: {{ .Values.worker.livenessProbe.periodSeconds }}
-            timeoutSeconds: {{ .Values.worker.livenessProbe.timeoutSeconds }}
-            exec:
-              command: {{- toYaml .Values.worker.livenessProbe.command | nindent 14 }}
+            {{- .Values.worker.livenessProbe | toYaml | nindent 12 }}
           {{- end }}
           resources:
             {{- toYaml .Values.worker.resources | nindent 12 }}
