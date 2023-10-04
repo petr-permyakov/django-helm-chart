@@ -134,6 +134,10 @@ beat:
 
 flower:
   enabled: false
+  image:
+    repository: mher/flower
+    tag: latest
+    pullPolicy: IfNotPresent
   resources:
     limits:
       cpu: 500m
