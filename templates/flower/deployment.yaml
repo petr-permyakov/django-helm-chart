@@ -17,7 +17,6 @@ spec:
       annotations:
         checksum/secret: {{ include (print $.Template.BasePath "/secrets.yaml") . | sha256sum }}
         checksum/configmap: {{ include (print $.Template.BasePath "/configmap.yaml") . | sha256sum }}
-        tag: "{{ .Values.image.tag }}"
         {{- if .Values.flower.podAnnotations }}
         {{- include "common.tplvalues.render" ( dict "value" .Values.flower.podAnnotations "context" $ ) | nindent 8 }}
         {{- end }}
@@ -25,7 +24,7 @@ spec:
         {{- include "django.selectorLabels" . | nindent 8 }}
         app.kubernetes.io/component: flower
     spec:
-    {{- with .Values.imagePullSecrets }}
+    {{- with .Values.flower.imagePullSecrets }}
       imagePullSecrets:
         {{- toYaml . | nindent 8 }}
     {{- end }}
@@ -38,8 +37,8 @@ spec:
           {{- end }}
           securityContext:
             {{- toYaml .Values.securityContext | nindent 12 }}
-          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
-          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          image: "{{ .Values.flower.image.repository }}:{{ .Values.flower.image.tag }}"
+          imagePullPolicy: {{ .Values.flower.image.pullPolicy }}
           ports:
           - containerPort: 5555
             name: http
