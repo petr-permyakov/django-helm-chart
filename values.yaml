@@ -14,7 +14,10 @@ fullnameOverride: ""
 preInstall:
   enabled: true
   activeDeadlineSeconds: 900
-  resources: null
+  resources:
+    limits: {}
+    requests: {}
+
 
 env:
   normal: {}
