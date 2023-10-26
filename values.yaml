@@ -190,3 +190,13 @@ postgresql:
   enabled: false
   #auth:
   #  postgresqlPassword: # Must be set
+
+# pre-install-job
+PreInstalljob:
+  resources:
+    limits:
+      memory: 100Mi
+      cpu: 100m
+    requests:
+      memory: 100Mi
+      cpu: 100m

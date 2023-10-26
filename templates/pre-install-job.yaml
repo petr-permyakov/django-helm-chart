@@ -27,7 +27,6 @@ spec:
         imagePullPolicy: {{ .Values.image.pullPolicy }}
         resources:
           {{- toYaml .Values.PreInstalljob.resources | nindent 12 }}
-
         command: ["./manage.py","migrate"]
         env:
           - name: DEBUG
