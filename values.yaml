@@ -14,6 +14,7 @@ fullnameOverride: ""
 preInstall:
   enabled: true
   activeDeadlineSeconds: 900
+  resources: null
 
 env:
   normal: {}
@@ -190,7 +191,4 @@ postgresql:
   enabled: false
   #auth:
   #  postgresqlPassword: # Must be set
-
-# pre-install-job
-PreInstalljob:
-  resources: null
+  

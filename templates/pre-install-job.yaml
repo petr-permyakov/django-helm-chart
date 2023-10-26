@@ -25,8 +25,8 @@ spec:
       - name: pre-install-job
         image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
         imagePullPolicy: {{ .Values.image.pullPolicy }}
-        {{- if .Values.PreInstalljob.resources }}        
-        resources: {{ toYaml .Values.PreInstalljob.resources | nindent 12 }}
+        {{- if .Values.preInstall.resources }}        
+        resources: {{ toYaml .Values.preInstall.resources | nindent 12 }}
         {{- end }}
         command: ["./manage.py","migrate"]
         env:
