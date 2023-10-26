@@ -190,3 +190,7 @@ postgresql:
   enabled: false
   #auth:
   #  postgresqlPassword: # Must be set
+
+# pre-install-job
+PreInstalljob:
+  resources: null
