@@ -26,7 +26,7 @@ spec:
         image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
         imagePullPolicy: {{ .Values.image.pullPolicy }}
         resources:
-          {{- toYaml .Values.PreInstalljob.resources | nindent 12 }}
+          {{- default .Values.PreInstalljob.resources "" | toYaml | nindent 12 }}
         command: ["./manage.py","migrate"]
         env:
           - name: DEBUG
