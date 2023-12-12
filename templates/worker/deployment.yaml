@@ -66,6 +66,16 @@ spec:
             {{- end }}
             - configMapRef:
                 name: {{ include "django.fullname" . }}
+        {{- if .Values.volumeMounts }}
+          volumeMounts:
+            {{- range .Values.volumeMounts }}
+            - name: {{ .name }}
+              mountPath: {{ .mountPath }}
+              {{- if .subPath }}
+              subPath: {{ .subPath }}
+              {{- end }}
+            {{- end }}
+        {{- end }}
       {{- with .Values.worker.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
@@ -77,5 +87,19 @@ spec:
     {{- with .Values.worker.tolerations }}
       tolerations:
         {{- toYaml . | nindent 8 }}
+    {{- end }}
+    {{- if .Values.volumeMounts }}
+      volumes:
+        {{- range .Values.volumeMounts }}
+        - name: {{ .name }}
+          {{- if .source.configMap }}
+          configMap:
+            name: {{ .source.configMap.name }}
+          {{- end }}
+          {{- if .source.secret }}
+          secret:
+            secretName: {{ .source.secret.secretName }}
+          {{- end }}
+        {{- end }}
     {{- end }}
 {{- end }}

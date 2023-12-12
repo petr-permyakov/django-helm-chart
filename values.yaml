@@ -24,6 +24,8 @@ env:
 
 existingSecret: ""
 
+volumeMounts: []
+
 web:
   replicaCount: 2
   port: 8080
