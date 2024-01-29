@@ -18,7 +18,7 @@ spec:
         checksum/secret: {{ include (print $.Template.BasePath "/secrets.yaml") . | sha256sum }}
         checksum/configmap: {{ include (print $.Template.BasePath "/configmap.yaml") . | sha256sum }}
         {{- if .Values.flower.podAnnotations }}
-        {{- include "common.tplvalues.render" ( dict "value" .Values.flower.podAnnotations "context" $ ) | nindent 8 }}
+        {{- include "django.tplvalues.render" ( dict "value" .Values.flower.podAnnotations "context" $ ) | nindent 8 }}
         {{- end }}
       labels:
         {{- include "django.selectorLabels" . | nindent 8 }}
