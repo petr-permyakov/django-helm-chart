@@ -22,31 +22,39 @@ spec:
     {{- end }}
       restartPolicy: Never
       containers:
-      - name: pre-install-job
-        image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
-        imagePullPolicy: {{ .Values.image.pullPolicy }}
-        command: ["./manage.py","migrate"]
-        env:
-          - name: DEBUG
-            value: "False"
+        - name: pre-install-job
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          command: [ "./manage.py","migrate" ]
+          env:
+            - name: DEBUG
+              value: "False"
 {{- if .Values.env.secret.DATABASE_URL }}
-          - name: DATABASE_URL
-            value: {{ .Values.env.secret.DATABASE_URL }}
+            - name: DATABASE_URL
+              value: {{ .Values.env.secret.DATABASE_URL }}
 {{- end }}
 {{- if .Values.postgresql.enabled }}
-          - name: DATABASE_PASSWORD
-            valueFrom:
-              secretKeyRef:
-                name: {{ include "django.postgresql.fullname" . }}
-                key: postgres-password
+            - name: DATABASE_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "django.postgresql.fullname" . }}
+                  key: postgres-password
 {{- end }}
-          - name: SECRET_KEY
-            value: {{ required "env.secret.SECRET_KEY is a required value." .Values.env.secret.SECRET_KEY }}
+            - name: SECRET_KEY
+              value: {{ required "env.secret.SECRET_KEY is a required value." .Values.env.secret.SECRET_KEY }}
         {{- range $k, $v := .Values.env.normal }}
-          - name: {{ $k }}
-            value: {{ $v | quote }}
+            - name: {{ $k }}
+              value: {{ $v | quote }}
         {{- end }}
-        envFrom:
-          - configMapRef:
-              name: {{ include "django.fullname" . }}
+          envFrom:
+            - configMapRef:
+                name: {{ include "django.fullname" . }}
+            - secretRef:
+                name: {{ include "django.fullname" . }}
+            {{- if .Values.existingSecret }}
+            - secretRef:
+                name: {{ .Values.existingSecret }}
+            {{- end }}
+
+
 {{- end }}

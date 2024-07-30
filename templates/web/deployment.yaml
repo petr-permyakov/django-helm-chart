@@ -51,6 +51,7 @@ spec:
             httpGet:
               path: {{ .Values.web.livenessProbe.path | default "/_health/" }}
               port: {{ .Values.web.port | default 8080 }}
+              scheme: {{ .Values.web.livenessProbe.scheme | default "HTTP" }}
             initialDelaySeconds: {{ .Values.web.livenessProbe.initialDelaySeconds }}
             timeoutSeconds: {{ .Values.web.livenessProbe.timeoutSeconds }}
           readinessProbe:
@@ -58,6 +59,7 @@ spec:
             httpGet:
               path: {{ .Values.web.readinessProbe.path | default "/_health/" }}
               port: {{ .Values.web.port | default 8080 }}
+              scheme: {{ .Values.web.readinessProbe.scheme | default "HTTP" }}
             initialDelaySeconds: {{ .Values.web.readinessProbe.initialDelaySeconds }}
             timeoutSeconds: {{ .Values.web.readinessProbe.timeoutSeconds }}
           resources:
