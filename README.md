@@ -69,3 +69,11 @@ Maintaining this chart takes time. Considering supporting it by
 - Check out [GlitchTip](https://glitchtip.com) error tracking, which is where this project started
 
 Commercial support is available - email info@burkesoftware.com
+
+## Building chart package and updating index.yaml
+
+Required to push updated packege to GH pages configured to docs/*  dir
+```    
+helm package . -d docs
+helm repo index  docs --url https://petr-permyakov.github.io/django-helm-chart/
+```
