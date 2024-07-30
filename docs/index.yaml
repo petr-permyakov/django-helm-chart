@@ -1,0 +1,23 @@
+apiVersion: v1
+entries:
+  django:
+  - apiVersion: v2
+    appVersion: 1.0.0
+    created: "2024-07-30T17:01:57.737785+03:00"
+    dependencies:
+    - condition: postgresql.enabled
+      name: postgresql
+      repository: https://charts.bitnami.com/bitnami
+      version: ~12.1.2
+    - condition: redis.enabled
+      name: redis
+      repository: https://charts.bitnami.com/bitnami
+      version: ~17.3.11
+    description: Generic Django + Celery Helm Chart
+    digest: 37e80fe2af9d0e74ae9779c4ae15c3db44257d01efb589b3cae71f2d16277f2d
+    name: django
+    type: application
+    urls:
+    - https://petr-permyakov.github.io/django-helm-chart/django-0.3.3.tgz
+    version: 0.3.3
+generated: "2024-07-30T17:01:57.724533+03:00"
